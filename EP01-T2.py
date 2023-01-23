@@ -21,12 +21,14 @@ class NumericalConvergenceTableOneVariable:
     result = ''
     errorModulus_n_minus_1 = 0
     h_n_minus_1 = 0
-    for i in range(20):
+    for i in range(8, 20):
       log_2_n = i
       n = 2 ** log_2_n
       h_n = (T - t_0) / n
 
       approximation = oneVariableEuler(y_0, t_0, T, n, self.f)
+
+      # print(approximation, n)
 
       errorModulus = np.absolute(globalDiscretizationError(T, self.y, approximation))
 
@@ -105,6 +107,9 @@ class NumericalConvergenceTableTwoVariables:
         self.f_y
       )
 
+      # print('x:', x_approximation, self.x(1))
+      # print('y:', y_approximation, self.y(1))
+
       x_errorModulus = np.absolute(globalDiscretizationError(self.T, self.x, x_approximation))
       y_errorModulus = np.absolute(globalDiscretizationError(self.T, self.y, y_approximation))
 
@@ -132,9 +137,6 @@ class NumericalConvergenceTableTwoVariables:
     return (x_result, y_result)
 
   def generateTables(self):
-    print(self.x(0))
-    print(self.y(0))
-
     convergenceTableX, convergenceTableY = self.calculateNumericalConvergenceTable()
 
     with open(self.outputFileX, 'w') as file:
