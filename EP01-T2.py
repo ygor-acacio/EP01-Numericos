@@ -126,11 +126,15 @@ class NumericalConvergenceTableTwoVariables:
       y_result += f'{n} & {h_n} & {y_errorModulus} & {p_y} \\\\\n'
 
       x_errorModulus_n_minus_1 = x_errorModulus
+      y_errorModulus_n_minus_1 = y_errorModulus
       h_n_minus_1 = h_n
 
     return (x_result, y_result)
 
   def generateTables(self):
+    print(self.x(0))
+    print(self.y(0))
+
     convergenceTableX, convergenceTableY = self.calculateNumericalConvergenceTable()
 
     with open(self.outputFileX, 'w') as file:
