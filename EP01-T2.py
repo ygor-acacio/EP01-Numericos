@@ -1,5 +1,6 @@
 from EulerMethod import oneVariableEuler, twoVariableEuler, globalDiscretizationError, convergenceOrderExponent
 import numpy as np
+import matplotlib.pyplot as plt
 from typing import Tuple
 
 # E = 2.7182818285
@@ -17,6 +18,7 @@ class NumericalConvergenceTableOneVariable:
     ''' y(t) = e^((e^(2t) - 1) / 2), solution of y\'(t) = f(t, y(t)); y(0) = 1 '''
     return E ** ((E ** (2.0 * t) - 1) / 2.0)
 
+  
   def calculateNumericalConvergenceTable(self, t_0: float, T: float, y_0: float) -> str:
     result = ''
     errorModulus_n_minus_1 = 0
@@ -27,6 +29,8 @@ class NumericalConvergenceTableOneVariable:
       h_n = (T - t_0) / n
 
       approximation = oneVariableEuler(y_0, t_0, T, n, self.f)
+
+      plt.plot( approximation, n, 'b.')
 
       errorModulus = np.absolute(globalDiscretizationError(T, self.y, approximation))
 
@@ -146,3 +150,11 @@ ex1.generateTable()
 
 ex2 = NumericalConvergenceTableTwoVariables(0, 1)
 ex2.generateTables()
+
+plt.grid(color='grey', linestyle='-', linewidth=0.5)
+plt.ylim(0, 550000)
+plt.xlim(8, 28)
+plt.xticks(range(8, 30, 1))
+
+plt.savefig("Gráfico2.pdf")
+plt.show()
