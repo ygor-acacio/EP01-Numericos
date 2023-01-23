@@ -52,7 +52,7 @@ class NumericalConvergenceTableOneVariable:
     plt.grid(color='grey', linestyle='-', linewidth=0.5)
     plt.ylim(0, 550000)
     plt.xlim(16, 28)
-    plt.savefig("Gráfico2.png")
+    plt.savefig("Gráfico2.pdf")
     plt.show()
 
     return result
