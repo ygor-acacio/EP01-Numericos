@@ -204,7 +204,7 @@ class LotkaVolterraEquationsSolutionApproximation:
       n = 2 ** log_2_n
       h_n = (T - t_0) / n
 
-      approximation = twoVariableEuler(
+      approximationX, approximationY = twoVariableEuler(
         x_0,
         y_0,
         t_0,
@@ -214,7 +214,7 @@ class LotkaVolterraEquationsSolutionApproximation:
         self.f_y
       )
 
-      print(approximation)
+      print((approximationX, approximationY))
 
 
 
