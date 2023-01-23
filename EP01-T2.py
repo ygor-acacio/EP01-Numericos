@@ -53,7 +53,6 @@ class NumericalConvergenceTableOneVariable:
     plt.ylim(0, 550000)
     plt.xlim(16, 28)
     plt.savefig("Gráfico2.pdf")
-    plt.show()
 
     return result
 
@@ -70,8 +69,6 @@ class NumericalConvergenceTableOneVariable:
 
 class NumericalConvergenceTableTwoVariables:
   outputFile = 'tables/T2-Tabela2.txt'
-  x_min = -1
-  x_max = 2
   Savename = 'Gráfico3.pdf'
 
   def norm(self, x: float, y: float) -> float:
@@ -125,11 +122,9 @@ class NumericalConvergenceTableTwoVariables:
       )
 
       if i == 8:
-        ax_x = ax.plot( x_approximation, n, 'k.', label = 'Aproximação de x')
-        ax_y = ax.plot( y_approximation, n, '.', color = 'grey', label = 'Aproximação de y')
+        ax.plot(x_approximation, y_approximation, 'k.', label = 'par ordenado x, y')
       else:
-        ax_x = ax.plot( x_approximation, n, 'k.')
-        ax_y = ax.plot( y_approximation, n, '.', color = 'grey',)
+        ax.plot(x_approximation, y_approximation, 'k.', )
          
       x_errorModulus = np.absolute(globalDiscretizationError(self.T, self.x, x_approximation))
       y_errorModulus = np.absolute(globalDiscretizationError(self.T, self.y, y_approximation))
@@ -148,15 +143,13 @@ class NumericalConvergenceTableTwoVariables:
       errorNorm_n_minus_1 = errorNorm
       h_n_minus_1 = h_n
 
-    ax.set(xlabel='Aproximação', ylabel='nº de passos',
+    ax.set(xlabel='Aproximação de x', ylabel='Aproximação de y',
        title='Convergência da aproximação de duas variáveis')
+
     plt.grid(color='grey', linestyle='-', linewidth=0.5)
 
     plt.legend(loc='best')
-    plt.ylim(0, 550000)
-    plt.xlim(self.x_min , self.x_max)
     plt.savefig(f'{self.Savename}')
-    plt.show()
 
     return result
 
@@ -169,8 +162,6 @@ class NumericalConvergenceTableTwoVariables:
 
 class NumericalConvergenceTableTwoVariables2(NumericalConvergenceTableTwoVariables):
   outputFile = 'tables/T2-Tabela3.txt'
-  x_min = 0
-  x_max = 9
   Savename = 'Gráfico4.pdf'
 
   def norm(self, x: float, y: float) -> float:
@@ -201,3 +192,5 @@ ex2.generateTables()
 
 ex3 = NumericalConvergenceTableTwoVariables2(t_0=0, T=1, x_0=1, y_0=0)
 ex3.generateTables()
+
+plt.show()

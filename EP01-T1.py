@@ -20,12 +20,13 @@ ax.plot(t, y3, color = 'black', ls='-.', lw= 0.5, label = 'cos(3t)')
 
 ax.set(xlabel='t', ylabel='y(t)',
        title='y(t)=cos(m.t), m = {1, 2, 3}')
-ax.grid(color='grey', linestyle='-', linewidth=0.5)
-
-plt.legend(loc='best')
 plt.xlim(-4, 4)
 plt.ylim(-1.5, 1.5) 
 plt.xticks([-np.pi, -np.pi/2, 0, np.pi/2, np.pi], [r'$-\pi$', r'$-\pi/2$', r'$0$', r'$+\pi/2$', r'$+\pi$'])
+
+
+ax.grid(color='grey', linestyle='-', linewidth=0.5)
+plt.legend(loc='best')
 
 plt.savefig("Gráfico.pdf")
 plt.show()
