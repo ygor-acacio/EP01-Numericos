@@ -60,12 +60,11 @@ class NumericalConvergenceTableTwoVariables:
   outputFileX = 'tables/T2-Tabela2X.txt'
   outputFileY = 'tables/T2-Tabela2Y.txt'
 
-  x_0 = 1
-  y_0 = 1
-
-  def __init__(self, t_0: float, T: float):
+  def __init__(self, t_0: float, T: float, x_0: float, y_0: float):
     self.t_0 = t_0
     self.T = T
+    self.x_0 = x_0
+    self.y_0 = y_0
 
   def f_x(self, t: float, x_t: float, y_t: float) -> float:
     ''' f_x(t, x(t), y(t)) = y(t) '''
@@ -105,9 +104,6 @@ class NumericalConvergenceTableTwoVariables:
         self.f_y
       )
 
-      print('x:', x_approximation, self.x(1))
-      print('y:', y_approximation, self.y(1))
-
       x_errorModulus = np.absolute(globalDiscretizationError(self.T, self.x, x_approximation))
       y_errorModulus = np.absolute(globalDiscretizationError(self.T, self.y, y_approximation))
 
@@ -145,8 +141,32 @@ class NumericalConvergenceTableTwoVariables:
       file.write(convergenceTableY)
       file.close()
 
+
+class NumericalConvergenceTableTwoVariables2(NumericalConvergenceTableTwoVariables):
+  outputFileX = 'tables/T2-Tabela3X.txt'
+  outputFileY = 'tables/T2-Tabela3Y.txt'
+
+  def f_x(self, t: float, x_t: float, y_t: float) -> float:
+    ''' f_x(t) = 3 * x(t) - 4 * y(t) '''
+    return 3 * x_t - 4 * y_t
+
+  def f_y(self, t: float, x_t: float, y_t: float) -> float:
+    ''' f_y(t) = x(t) - y(t) '''
+    return x_t - y_t
+
+  def x(self, t: float) -> float:
+    return 2 * t * E ** t + E ** t
+
+  def y(self, t: float) -> float:
+    return t * E ** t
+
+
+
 ex1 = NumericalConvergenceTableOneVariable()
 ex1.generateTable()
 
-ex2 = NumericalConvergenceTableTwoVariables(0, 1)
+ex2 = NumericalConvergenceTableTwoVariables(t_0=0, T=1, x_0=1, y_0=1)
 ex2.generateTables()
+
+ex3 = NumericalConvergenceTableTwoVariables2(t_0=0, T=1, x_0=1, y_0=0)
+ex3.generateTables()

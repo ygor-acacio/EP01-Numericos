@@ -53,5 +53,3 @@ def globalDiscretizationError(
 
 def convergenceOrderExponent(e_n: float, e_n_plus_1: float, h_n: float, h_n_plus_1: float) -> float:
   return np.log2(np.absolute(e_n / e_n_plus_1)) / np.log2(np.absolute(h_n / h_n_plus_1))
-
-print(twoVariableEuler(1, 1, 0, 1, 2, lambda t, x, y : y, lambda t, x, y : -x))
