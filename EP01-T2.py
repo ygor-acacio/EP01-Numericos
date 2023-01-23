@@ -31,7 +31,7 @@ class NumericalConvergenceTableOneVariable:
 
       approximation = oneVariableEuler(y_0, t_0, T, n, self.f)
 
-      ax.plot( approximation, n,  'b.', color = 'black')
+      ax.plot( approximation, n,  'k.')
 
       errorModulus = np.absolute(globalDiscretizationError(T, self.y, approximation))
 
@@ -48,12 +48,11 @@ class NumericalConvergenceTableOneVariable:
       h_n_minus_1 = h_n
 
     ax.set(xlabel='Aproximação', ylabel='nº de passos',
-       title='Convergência da aproximação')
+       title='Convergência da aproximação de uma variável')
     plt.grid(color='grey', linestyle='-', linewidth=0.5)
     plt.ylim(0, 550000)
     plt.xlim(16, 28)
-    # plt.xticks(range(14, 30, 1))
-    plt.savefig("Gráfico2.pdf")
+    plt.savefig("Gráfico2.png")
     plt.show()
 
     return result
@@ -73,6 +72,7 @@ class NumericalConvergenceTableTwoVariables:
   outputFile = 'tables/T2-Tabela2.txt'
   x_min = -1
   x_max = 2
+  Savename = 'Gráfico3.pdf'
 
   def norm(self, x: float, y: float) -> float:
     ''' Maximum norm '''
@@ -124,9 +124,13 @@ class NumericalConvergenceTableTwoVariables:
         self.f_y
       )
 
-      ax.plot( x_approximation, n, 'b.', label = 'Aproximação de x', color = 'black')
-      ax.plot( y_approximation, n, 'b.', linestyle='dotted', label = 'Aproximação de y', color = 'black' )
-
+      if i == 8:
+        ax_x = ax.plot( x_approximation, n, 'k.', label = 'Aproximação de x')
+        ax_y = ax.plot( y_approximation, n, '.', color = 'grey', label = 'Aproximação de y')
+      else:
+        ax_x = ax.plot( x_approximation, n, 'k.')
+        ax_y = ax.plot( y_approximation, n, '.', color = 'grey',)
+         
       x_errorModulus = np.absolute(globalDiscretizationError(self.T, self.x, x_approximation))
       y_errorModulus = np.absolute(globalDiscretizationError(self.T, self.y, y_approximation))
 
@@ -145,11 +149,13 @@ class NumericalConvergenceTableTwoVariables:
       h_n_minus_1 = h_n
 
     ax.set(xlabel='Aproximação', ylabel='nº de passos',
-       title='Convergência da aproximação')
+       title='Convergência da aproximação de duas variáveis')
     plt.grid(color='grey', linestyle='-', linewidth=0.5)
+
+    plt.legend(loc='best')
     plt.ylim(0, 550000)
     plt.xlim(self.x_min , self.x_max)
-    plt.savefig("Gráfico3.pdf")
+    plt.savefig(f'{self.Savename}')
     plt.show()
 
     return result
@@ -163,8 +169,9 @@ class NumericalConvergenceTableTwoVariables:
 
 class NumericalConvergenceTableTwoVariables2(NumericalConvergenceTableTwoVariables):
   outputFile = 'tables/T2-Tabela3.txt'
-  x_min = -1
+  x_min = 0
   x_max = 9
+  Savename = 'Gráfico4.pdf'
 
   def norm(self, x: float, y: float) -> float:
     ''' Euclidean norm '''
