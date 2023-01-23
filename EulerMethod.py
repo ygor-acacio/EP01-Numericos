@@ -36,7 +36,7 @@ def twoVariableEuler(
   t_k = t_0
   for i in range(n):
     x_k_plus_1 = x_k + h * f_x(t_k, x_k, y_k)
-    y_k_plus_1 = x_k + h * f_y(t_k, x_k, y_k)
+    y_k_plus_1 = y_k + h * f_y(t_k, x_k, y_k)
     x_k = x_k_plus_1
     y_k = y_k_plus_1
     t_k = t_k + h

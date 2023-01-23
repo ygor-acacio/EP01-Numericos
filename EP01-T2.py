@@ -23,7 +23,7 @@ class NumericalConvergenceTableOneVariable:
     result = ''
     errorModulus_n_minus_1 = 0
     h_n_minus_1 = 0
-    for i in range(20):
+    for i in range(8, 20):
       log_2_n = i
       n = 2 ** log_2_n
       h_n = (T - t_0) / n
@@ -34,7 +34,7 @@ class NumericalConvergenceTableOneVariable:
 
       errorModulus = np.absolute(globalDiscretizationError(T, self.y, approximation))
 
-      p = '-----' if i == 0 else convergenceOrderExponent(
+      p = '-----' if i == 8 else convergenceOrderExponent(
         e_n=errorModulus_n_minus_1, 
         e_n_plus_1=errorModulus, 
         h_n=h_n_minus_1, 
@@ -64,12 +64,11 @@ class NumericalConvergenceTableTwoVariables:
   outputFileX = 'tables/T2-Tabela2X.txt'
   outputFileY = 'tables/T2-Tabela2Y.txt'
 
-  x_0 = 1
-  y_0 = 1
-
-  def __init__(self, t_0: float, T: float):
+  def __init__(self, t_0: float, T: float, x_0: float, y_0: float):
     self.t_0 = t_0
     self.T = T
+    self.x_0 = x_0
+    self.y_0 = y_0
 
   def f_x(self, t: float, x_t: float, y_t: float) -> float:
     ''' f_x(t, x(t), y(t)) = y(t) '''
@@ -94,7 +93,7 @@ class NumericalConvergenceTableTwoVariables:
     x_errorModulus_n_minus_1 = 0
     y_errorModulus_n_minus_1 = 0
     h_n_minus_1 = 0
-    for i in range(20):
+    for i in range(8, 20):
       log_2_n = i
       n = 2 ** log_2_n
       h_n = (self.T - self.t_0) / n
@@ -112,14 +111,14 @@ class NumericalConvergenceTableTwoVariables:
       x_errorModulus = np.absolute(globalDiscretizationError(self.T, self.x, x_approximation))
       y_errorModulus = np.absolute(globalDiscretizationError(self.T, self.y, y_approximation))
 
-      p_x = '-----' if i == 0 else convergenceOrderExponent(
+      p_x = '-----' if i == 8 else convergenceOrderExponent(
         e_n=x_errorModulus_n_minus_1, 
         e_n_plus_1=x_errorModulus, 
         h_n=h_n_minus_1, 
         h_n_plus_1=h_n
       )
 
-      p_y = '-----' if i == 0 else convergenceOrderExponent(
+      p_y = '-----' if i == 8 else convergenceOrderExponent(
         e_n=y_errorModulus_n_minus_1, 
         e_n_plus_1=y_errorModulus, 
         h_n=h_n_minus_1, 
@@ -130,6 +129,7 @@ class NumericalConvergenceTableTwoVariables:
       y_result += f'{n} & {h_n} & {y_errorModulus} & {p_y} \\\\\n'
 
       x_errorModulus_n_minus_1 = x_errorModulus
+      y_errorModulus_n_minus_1 = y_errorModulus
       h_n_minus_1 = h_n
 
     return (x_result, y_result)
@@ -145,6 +145,27 @@ class NumericalConvergenceTableTwoVariables:
       file.write(convergenceTableY)
       file.close()
 
+
+class NumericalConvergenceTableTwoVariables2(NumericalConvergenceTableTwoVariables):
+  outputFileX = 'tables/T2-Tabela3X.txt'
+  outputFileY = 'tables/T2-Tabela3Y.txt'
+
+  def f_x(self, t: float, x_t: float, y_t: float) -> float:
+    ''' f_x(t) = 3 * x(t) - 4 * y(t) '''
+    return 3 * x_t - 4 * y_t
+
+  def f_y(self, t: float, x_t: float, y_t: float) -> float:
+    ''' f_y(t) = x(t) - y(t) '''
+    return x_t - y_t
+
+  def x(self, t: float) -> float:
+    return 2 * t * E ** t + E ** t
+
+  def y(self, t: float) -> float:
+    return t * E ** t
+
+
+
 ex1 = NumericalConvergenceTableOneVariable()
 ex1.generateTable()
 
@@ -158,3 +179,8 @@ plt.xticks(range(8, 30, 1))
 
 plt.savefig("Gráfico2.pdf")
 plt.show()
+ex2 = NumericalConvergenceTableTwoVariables(t_0=0, T=1, x_0=1, y_0=1)
+ex2.generateTables()
+
+ex3 = NumericalConvergenceTableTwoVariables2(t_0=0, T=1, x_0=1, y_0=0)
+ex3.generateTables()
