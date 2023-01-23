@@ -28,11 +28,9 @@ class NumericalConvergenceTableOneVariable:
 
       approximation = oneVariableEuler(y_0, t_0, T, n, self.f)
 
-      # print(approximation, n)
-
       errorModulus = np.absolute(globalDiscretizationError(T, self.y, approximation))
 
-      p = '-----' if i == 0 else convergenceOrderExponent(
+      p = '-----' if i == 8 else convergenceOrderExponent(
         e_n=errorModulus_n_minus_1, 
         e_n_plus_1=errorModulus, 
         h_n=h_n_minus_1, 
@@ -92,7 +90,7 @@ class NumericalConvergenceTableTwoVariables:
     x_errorModulus_n_minus_1 = 0
     y_errorModulus_n_minus_1 = 0
     h_n_minus_1 = 0
-    for i in range(20):
+    for i in range(8, 20):
       log_2_n = i
       n = 2 ** log_2_n
       h_n = (self.T - self.t_0) / n
@@ -107,20 +105,20 @@ class NumericalConvergenceTableTwoVariables:
         self.f_y
       )
 
-      # print('x:', x_approximation, self.x(1))
-      # print('y:', y_approximation, self.y(1))
+      print('x:', x_approximation, self.x(1))
+      print('y:', y_approximation, self.y(1))
 
       x_errorModulus = np.absolute(globalDiscretizationError(self.T, self.x, x_approximation))
       y_errorModulus = np.absolute(globalDiscretizationError(self.T, self.y, y_approximation))
 
-      p_x = '-----' if i == 0 else convergenceOrderExponent(
+      p_x = '-----' if i == 8 else convergenceOrderExponent(
         e_n=x_errorModulus_n_minus_1, 
         e_n_plus_1=x_errorModulus, 
         h_n=h_n_minus_1, 
         h_n_plus_1=h_n
       )
 
-      p_y = '-----' if i == 0 else convergenceOrderExponent(
+      p_y = '-----' if i == 8 else convergenceOrderExponent(
         e_n=y_errorModulus_n_minus_1, 
         e_n_plus_1=y_errorModulus, 
         h_n=h_n_minus_1, 
