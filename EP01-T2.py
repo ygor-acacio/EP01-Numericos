@@ -183,6 +183,41 @@ class NumericalConvergenceTableTwoVariables2(NumericalConvergenceTableTwoVariabl
     return t * E ** t
 
 
+class LotkaVolterraEquationsSolutionApproximation:
+  def __init__(self, alpha: float, beta: float, gamma: float, delta: float):
+    self.alpha = alpha
+    self.beta = beta
+    self.gamma = gamma
+    self.delta = delta
+
+  def f_x(self, t: float, x_t: float, y_t: float) -> float:
+    ''' f_x(t) = 3 * x(t) - 4 * y(t) '''
+    return self.alpha * x_t - self.beta * y_t
+
+  def f_y(self, t: float, x_t: float, y_t: float) -> float:
+    ''' f_y(t) = x(t) - y(t) '''
+    return self.delta * x_t * y_t - self.gamma * y_t
+
+  def calculateApproximations(self, t_0: float, T: float, x_0: float, y_0: float) -> None:
+    for i in range(8, 20):
+      log_2_n = i
+      n = 2 ** log_2_n
+      h_n = (T - t_0) / n
+
+      approximation = twoVariableEuler(
+        x_0,
+        y_0,
+        t_0,
+        T,
+        n,
+        self.f_x,
+        self.f_y
+      )
+
+      print(approximation)
+
+
+
 
 ex1 = NumericalConvergenceTableOneVariable()
 ex1.generateTable()
@@ -194,3 +229,6 @@ ex3 = NumericalConvergenceTableTwoVariables2(t_0=0, T=1, x_0=1, y_0=0)
 ex3.generateTables()
 
 plt.show()
+lotkaVolterra = LotkaVolterraEquationsSolutionApproximation(1, 2, 3, 4)
+
+lotkaVolterra.calculateApproximations(t_0=0, T=1, x_0=1, y_0=1)
