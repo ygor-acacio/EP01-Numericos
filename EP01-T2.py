@@ -18,11 +18,13 @@ class NumericalConvergenceTableOneVariable:
     ''' y(t) = e^((e^(2t) - 1) / 2), solution of y\'(t) = f(t, y(t)); y(0) = 1 '''
     return E ** ((E ** (2.0 * t) - 1) / 2.0)
 
-  
   def calculateNumericalConvergenceTable(self, t_0: float, T: float, y_0: float) -> str:
     result = ''
     errorModulus_n_minus_1 = 0
     h_n_minus_1 = 0
+
+    fig, ax = plt.subplots()
+    
     for i in range(8, 20):
       log_2_n = i
       n = 2 ** log_2_n
@@ -30,7 +32,7 @@ class NumericalConvergenceTableOneVariable:
 
       approximation = oneVariableEuler(y_0, t_0, T, n, self.f)
 
-      plt.plot( approximation, n, 'b.')
+      ax.plot( approximation, n, 'b.')
 
       errorModulus = np.absolute(globalDiscretizationError(T, self.y, approximation))
 
@@ -45,6 +47,15 @@ class NumericalConvergenceTableOneVariable:
 
       errorModulus_n_minus_1 = errorModulus
       h_n_minus_1 = h_n
+
+    ax.set(xlabel='aproximação', ylabel='n',
+       title='Convergência da aproximação')
+    plt.grid(color='grey', linestyle='-', linewidth=0.5)
+    plt.ylim(0, 550000)
+    plt.xlim(8, 28)
+    plt.xticks(range(8, 30, 1))
+    plt.savefig("Gráfico2.pdf")
+    plt.show()
 
     return result
 
@@ -169,16 +180,6 @@ class NumericalConvergenceTableTwoVariables2(NumericalConvergenceTableTwoVariabl
 ex1 = NumericalConvergenceTableOneVariable()
 ex1.generateTable()
 
-ex2 = NumericalConvergenceTableTwoVariables(0, 1)
-ex2.generateTables()
-
-plt.grid(color='grey', linestyle='-', linewidth=0.5)
-plt.ylim(0, 550000)
-plt.xlim(8, 28)
-plt.xticks(range(8, 30, 1))
-
-plt.savefig("Gráfico2.pdf")
-plt.show()
 ex2 = NumericalConvergenceTableTwoVariables(t_0=0, T=1, x_0=1, y_0=1)
 ex2.generateTables()
 
