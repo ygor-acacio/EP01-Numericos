@@ -1,13 +1,5 @@
-from collections.abc import Callable
+from typing import Tuple, Callable
 import numpy as np
-
-def y_k_plus_1(
-  y_k: float, 
-  h: float, 
-  t_k: float, 
-  phi: Callable[[float, float, float], float]
-) -> float:
-  return y_k + h * phi(t_k, y_k, h)
   
 
 def oneVariableEuler(
@@ -22,11 +14,34 @@ def oneVariableEuler(
   y_k = y_0
   t_k = t_0
   for i in range(n):
-    current_y = y_k_plus_1(y_k, h, t_k, lambda t_k, y_k, h : f(t_k, y_k))
-    y_k = current_y
+    y_k_plus_1 = y_k + h * f(t_k, y_k)
+    y_k = y_k_plus_1
     t_k = t_k + h
 
   return y_k
+
+def twoVariableEuler(
+  x_0: float,
+  y_0: float,
+  t_0: float,
+  T: float,
+  n: int,
+  f_x: Callable[[float, float, float], float],
+  f_y: Callable[[float, float, float], float]
+) -> Tuple[float, float]:
+  h = (T - t_0) / float(n)
+
+  x_k = x_0
+  y_k = y_0
+  t_k = t_0
+  for i in range(n):
+    x_k_plus_1 = x_k + h * f_x(t_k, x_k, y_k)
+    y_k_plus_1 = x_k + h * f_y(t_k, x_k, y_k)
+    x_k = x_k_plus_1
+    y_k = y_k_plus_1
+    t_k = t_k + h
+
+  return (x_k, y_k)
 
 
 def globalDiscretizationError(
