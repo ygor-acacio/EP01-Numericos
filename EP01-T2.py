@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Tuple
 
-# E = 2.7182818285
 E = np.e
 
 class NumericalConvergenceTableOneVariable:
@@ -70,10 +69,12 @@ class NumericalConvergenceTableOneVariable:
       file.write(convergenceTable1)
       file.close()
 
-
 class NumericalConvergenceTableTwoVariables:
-  outputFileX = 'tables/T2-Tabela2X.txt'
-  outputFileY = 'tables/T2-Tabela2Y.txt'
+  outputFile = 'tables/T2-Tabela2.txt'
+
+  def norm(self, x: float, y: float) -> float:
+    ''' Maximum norm '''
+    return max(x, y)
 
   def __init__(self, t_0: float, T: float, x_0: float, y_0: float):
     self.t_0 = t_0
@@ -98,11 +99,10 @@ class NumericalConvergenceTableTwoVariables:
     return np.cos(t) - np.sin(t)
 
 
-  def calculateNumericalConvergenceTable(self) -> Tuple[str, str]:
-    x_result = ''
-    y_result = ''
-    x_errorModulus_n_minus_1 = 0
-    y_errorModulus_n_minus_1 = 0
+  def calculateNumericalConvergenceTable(self) -> str:
+    result = ''
+
+    errorNorm_n_minus_1 = 0
     h_n_minus_1 = 0
     for i in range(8, 20):
       log_2_n = i
@@ -122,44 +122,35 @@ class NumericalConvergenceTableTwoVariables:
       x_errorModulus = np.absolute(globalDiscretizationError(self.T, self.x, x_approximation))
       y_errorModulus = np.absolute(globalDiscretizationError(self.T, self.y, y_approximation))
 
-      p_x = '-----' if i == 8 else convergenceOrderExponent(
-        e_n=x_errorModulus_n_minus_1, 
-        e_n_plus_1=x_errorModulus, 
-        h_n=h_n_minus_1, 
+      errorNorm = self.norm(x_errorModulus, y_errorModulus)
+
+      p = '-----' if i == 8 else convergenceOrderExponent(
+        e_n=errorNorm_n_minus_1,
+        e_n_plus_1=errorNorm,
+        h_n=h_n_minus_1,
         h_n_plus_1=h_n
       )
 
-      p_y = '-----' if i == 8 else convergenceOrderExponent(
-        e_n=y_errorModulus_n_minus_1, 
-        e_n_plus_1=y_errorModulus, 
-        h_n=h_n_minus_1, 
-        h_n_plus_1=h_n
-      )
+      result += f'{n} & {h_n} & {errorNorm} & {p} \\\\\n'
 
-      x_result += f'{n} & {h_n} & {x_errorModulus} & {p_x} \\\\\n'
-      y_result += f'{n} & {h_n} & {y_errorModulus} & {p_y} \\\\\n'
-
-      x_errorModulus_n_minus_1 = x_errorModulus
-      y_errorModulus_n_minus_1 = y_errorModulus
+      errorNorm_n_minus_1 = errorNorm
       h_n_minus_1 = h_n
 
-    return (x_result, y_result)
+    return result
 
   def generateTables(self):
-    convergenceTableX, convergenceTableY = self.calculateNumericalConvergenceTable()
+    convergenceTable = self.calculateNumericalConvergenceTable()
 
-    with open(self.outputFileX, 'w') as file:
-      file.write(convergenceTableX)
+    with open(self.outputFile, 'w') as file:
+      file.write(convergenceTable)
       file.close()
-
-    with open(self.outputFileY, 'w') as file:
-      file.write(convergenceTableY)
-      file.close()
-
 
 class NumericalConvergenceTableTwoVariables2(NumericalConvergenceTableTwoVariables):
-  outputFileX = 'tables/T2-Tabela3X.txt'
-  outputFileY = 'tables/T2-Tabela3Y.txt'
+  outputFile = 'tables/T2-Tabela3.txt'
+
+  def norm(self, x: float, y: float) -> float:
+    ''' Euclidean norm '''
+    return np.sqrt(x ** 2 + y ** 2)
 
   def f_x(self, t: float, x_t: float, y_t: float) -> float:
     ''' f_x(t) = 3 * x(t) - 4 * y(t) '''
