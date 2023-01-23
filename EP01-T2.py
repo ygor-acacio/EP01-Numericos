@@ -31,7 +31,7 @@ class NumericalConvergenceTableOneVariable:
 
       approximation = oneVariableEuler(y_0, t_0, T, n, self.f)
 
-      ax.plot( approximation, n,  'b.')
+      ax.plot( approximation, n,  'b.', color = 'black')
 
       errorModulus = np.absolute(globalDiscretizationError(T, self.y, approximation))
 
@@ -124,8 +124,8 @@ class NumericalConvergenceTableTwoVariables:
         self.f_y
       )
 
-      ax.plot( x_approximation, n, 'b.', label = 'Aproximação de x')
-      ax.plot( y_approximation, n, 'b.', linestyle='dotted', label = 'Aproximação de y' )
+      ax.plot( x_approximation, n, 'b.', label = 'Aproximação de x', color = 'black')
+      ax.plot( y_approximation, n, 'b.', linestyle='dotted', label = 'Aproximação de y', color = 'black' )
 
       x_errorModulus = np.absolute(globalDiscretizationError(self.T, self.x, x_approximation))
       y_errorModulus = np.absolute(globalDiscretizationError(self.T, self.y, y_approximation))
