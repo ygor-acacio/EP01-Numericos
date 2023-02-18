@@ -9,7 +9,9 @@ def twoVariableEuler(
   T: float,
   n: int,
   f_x: Callable[[float, float, float], float],
-  f_y: Callable[[float, float, float], float]
+  f_y: Callable[[float, float, float], float],
+  x_k_plus_1_supposed: float,
+  y_k_plus_1_supposed: float,
 ) -> Tuple[float, float]:
   h = (T - t_0) / float(n)
 
@@ -17,8 +19,12 @@ def twoVariableEuler(
   y_k = y_0
   t_k = t_0
   for i in range(n):
-    x_k_plus_1 = x_k + h * f_x(t_k, x_k, y_k)
-    y_k_plus_1 = y_k + h * f_y(t_k, x_k, y_k)
+    if i == 0:
+      x_k_plus_1 = x_k_plus_1_supposed
+      y_k_plus_1 = y_k_plus_1_supposed
+    
+    x_k_plus_1 = x_k + h/2 * (f_x(t_k, x_k, y_k) + f_x(t_k+h, x_k_plus_1, y_k))
+    y_k_plus_1 = y_k + h/2 * (f_y(t_k, x_k, y_k) + f_y(t_k+h, x_k, y_k_plus_1))
     x_k = x_k_plus_1
     y_k = y_k_plus_1
     t_k = t_k + h
