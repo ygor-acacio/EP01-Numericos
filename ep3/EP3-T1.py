@@ -17,10 +17,6 @@ class NumericalConvergenceTableTwoVariables:
   outputFile = 'tables/tabela1.txt'
   chartFile = 'Gráfico1.pdf'
 
-  def norm(self, x: float, y: float) -> float:
-    ''' Maximum norm '''
-    return max(x, y)
-
   def __init__(self, t_0: float, T: float, x_0: float, y_0: float):
     self.t_0 = t_0
     self.T = T
