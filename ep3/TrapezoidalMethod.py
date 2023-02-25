@@ -7,7 +7,7 @@ def trapezoidalMethod(
   T: float,
   n: int,
   f: Callable[[float, np.ndarray], np.ndarray],
-  fixedPointEpsilon: float,
+  fixedPointIterations: int,
 ) -> np.ndarray:
   '''
   Implementa o Método do Trapézio para um vetor `y`
@@ -19,7 +19,7 @@ def trapezoidalMethod(
     y_k_plus_1 = fixedPointIteration(
       phi=lambda x : y_k + (h/2) * (f(t_k, y_k) + f(t_k + h, x)),
       x_0=y_k,
-      epsilon=fixedPointEpsilon
+      iterations=fixedPointIterations
     )
 
     y_k = y_k_plus_1
@@ -31,16 +31,14 @@ def trapezoidalMethod(
 def fixedPointIteration(
   phi: Callable[[np.ndarray], np.ndarray],
   x_0: np.ndarray,
-  epsilon: float,
+  iterations: int,
 ) -> np.ndarray:
   ''' 
   Implementa o MAS para a função `phi`, com valor inicial `x_0`
-  e critério de parada ||`x_n` - `x_n_minus_1`|| < `epsilon`
+  e critério número de iterações `iterations`
   '''
   x_n = phi(x_0)
-  x_n_minus_1 = x_0
-  while np.linalg.norm(x_n - x_n_minus_1) > epsilon: # type: ignore
-    x_n_minus_1 = x_n
+  for _ in range(iterations): # type: ignore
     x_n = phi(x_n)
 
   return x_n

@@ -7,11 +7,11 @@ from os import path
 # número de Euler
 E = np.e
 
-# epsilon para MAS
-epsilon = 10E-6
+# iterações para MAS
+iterations = 20
 
 # nome do diretório
-dirname = path.dirname(__file__)
+dirname = path.dirname(path.abspath(__file__))
 
 class NumericalConvergenceTableTwoVariables:
   outputFile = 'tables/tabela1.txt'
@@ -62,7 +62,7 @@ class NumericalConvergenceTableTwoVariables:
         T=self.T,
         n=n,
         f=self.f,
-        fixedPointEpsilon=epsilon,
+        fixedPointIterations=iterations,
       )
 
       if i == begin:
@@ -164,7 +164,7 @@ class LotkaVolterraEquationsSolutionApproximation:
         T=T,
         n=n,
         f=self.f,
-        fixedPointEpsilon=epsilon,
+        fixedPointIterations=iterations,
       )
 
       if begin == 8:
