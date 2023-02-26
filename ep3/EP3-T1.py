@@ -96,7 +96,7 @@ class NumericalConvergenceTableTwoVariables:
     plt.grid(color='grey', linestyle='-', linewidth=0.5)
 
     plt.legend(loc='best')
-    plt.savefig(f'{dirname}/{self.chartFile}')
+    plt.savefig(f'{dirname}/{self.chartFile}', bbox_inches='tight')
 
     return result
 
@@ -180,7 +180,7 @@ class LotkaVolterraEquationsSolutionApproximation:
     plt.grid(color='grey', linestyle='-', linewidth=0.5)
 
     plt.legend(loc='best')
-    plt.savefig(f'{dirname}/{self.chartFile}')
+    plt.savefig(f'{dirname}/{self.chartFile}', bbox_inches='tight')
 
 
 ex1 = NumericalConvergenceTableTwoVariables(t_0=0, T=1, x_0=1, y_0=1)
